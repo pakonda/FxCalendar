@@ -6,6 +6,10 @@ import arrow
 from pprint import pprint
 import os
 import json
+import itertools
+
+if not os.path.exists("data"):
+    os.makedirs("data")
 
 
 NOW = arrow.utcnow()
@@ -20,6 +24,7 @@ COOKIES = {
 
 def get_calendar(days_shift: int = 0):
     now = NOW.shift(days=days_shift)
+    print("start scraping on", now.format("YYYY-MM-DD"), end="...")
     params = {"day": now.format("MMMDD.YYYY")}
     jar = requests.cookies.RequestsCookieJar()
     for k, v in COOKIES.items():
@@ -41,8 +46,8 @@ def get_calendar(days_shift: int = 0):
     ]
 
     if len(trs) == 1 and trs[0]["data-eventid"] == "":
-        print("no event on", now.format("YYYY-MM-DD"))
-        return
+        print("no event")
+        return []
 
     events = []
     for tr in trs:
@@ -69,7 +74,7 @@ def get_calendar(days_shift: int = 0):
         dt = arrow.get(f"{now.format('YYYY-MM-DD')} {curr_time}", "YYYY-MM-DD H:mm")
         event["datetime"] = str(dt)
         events.append(event)
-
+    print(f"done ({len(events)} events)")
     # pprint(events)
 
     dir = f"data/date/{now.year}/{now.month}"
@@ -79,8 +84,16 @@ def get_calendar(days_shift: int = 0):
     json_file = f"{dir}/{now.format('YYYY-MM-DD')}.json"
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(events, f)
+    return events
 
 
 if __name__ == "__main__":
+    events_day = []
     for i in range(-7, 7):
-        get_calendar(i)
+        events = get_calendar(i)
+        events_day.append(events)
+
+    merged = list(itertools.chain.from_iterable(events_day))
+
+    with open("data/last_update.json", "w", encoding="utf-8") as f:
+        json.dump(merged, f)
