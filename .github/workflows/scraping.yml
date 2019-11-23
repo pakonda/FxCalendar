@@ -1,4 +1,4 @@
-name: Python application
+name: Scraping
 
 on:
   push:
@@ -10,10 +10,10 @@ on:
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v1
     - name: Set up Python 3.7
       uses: actions/setup-python@v1
       with:
@@ -34,6 +34,7 @@ jobs:
       run: |
         git config --global user.email "action@github.com"
         git config --global user.name "GitHub Action"
+        cp README.md data/
         cd data && git add --all .
         git commit -m "Add changes"
         git push --force origin gh-pages
