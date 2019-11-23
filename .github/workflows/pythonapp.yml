@@ -27,8 +27,8 @@ jobs:
         python fx_calendar.py
     - name: Commit files
       run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
         cd data && git add --all .
         git commit -m "Add changes"
         git push --force origin gh-pages
