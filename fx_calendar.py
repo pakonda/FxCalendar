@@ -74,7 +74,7 @@ def get_calendar(days_shift: int = 0):
         dt = arrow.get(
             f"{shifted_dt.format('YYYY-MM-DD')} {curr_time}", "YYYY-MM-DD H:mm"
         )
-        event["datetime"] = str(dt)
+        event["event_dt"] = dt.format("YYYY-MM-DDTHH:mm:ssZZ")
         events.append(event)
     print(f"done ({len(events)} events)")
     # pprint(events)
@@ -84,7 +84,7 @@ def get_calendar(days_shift: int = 0):
         os.makedirs(dir)
 
     json_file = f"{dir}/{shifted_dt.format('YYYY-MM-DD')}.json"
-    json_data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": events}
+    json_data = {"timestamp": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": events}
     with open(json_file, "w", encoding="utf-8") as f:
         json.dump(json_data, f)
     return events
@@ -98,6 +98,6 @@ if __name__ == "__main__":
 
     merged = list(itertools.chain.from_iterable(events_day))
 
-    json_data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
+    json_data = {"timestamp": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
     with open("data/last_update.json", "w", encoding="utf-8") as f:
         json.dump(json_data, f)
