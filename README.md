@@ -4,6 +4,10 @@
 
 Forex Calendar @ Forex Factory
 
+- For EA
+- Update every day
+- UTC +0
+
 ```text
 curl https://pakonda.github.io/FxCalendar/last_update.json
 
