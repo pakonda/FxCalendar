@@ -29,8 +29,7 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git commit -m "Add changes" -a
-    - name: Push changes
-      run: |
+        cd data && git add --all .
+        git commit -m "Add changes"
         git push --force origin gh-pages
     
