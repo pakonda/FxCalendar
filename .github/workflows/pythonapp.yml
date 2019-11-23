@@ -18,5 +18,8 @@ jobs:
         ls -l
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        python fx_calendar.py
-        ls -l
+    - name: Clone gh-pages
+      run: |
+        git clone -b gh-pages "https://github.com/pakonda/FxCalendar" data
+        ls -l data
+    
