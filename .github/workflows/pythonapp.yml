@@ -15,21 +15,8 @@ jobs:
         python-version: 3.7
     - name: Install dependencies
       run: |
+        ls -l
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Clone gh-pages
-      run: |
-        git clone -b gh-pages "https://${{secrets.GITHUB_TOKEN}}@github.com/pakonda/FxCalendar.git" data
-    - name: Scraping
-      run: |
         python fx_calendar.py
-    - name: Commit files
-      run: |
-        cd data
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git commit -m "Add changes" -a
-    - name: Push changes
-      uses: pakonda/FxCalendar@gh-pages
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
+        ls -l
