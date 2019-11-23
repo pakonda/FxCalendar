@@ -1,6 +1,6 @@
 # FxCalendar
 
-![](https://github.com/pakonda/FxCalendar/workflows/.github/workflows/scraping.yml/badge.svg)
+[![Actions Status](https://github.com/pakonda/FxCalendar/workflows/Scraping/badge.svg)](https://github.com/pakonda/FxCalendar/actions)
 
 Forex Calendar @ Forex Factory
 
