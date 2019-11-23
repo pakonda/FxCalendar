@@ -95,5 +95,6 @@ if __name__ == "__main__":
 
     merged = list(itertools.chain.from_iterable(events_day))
 
+    last_update = {"last_run": NOW.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
     with open("data/last_update.json", "w", encoding="utf-8") as f:
-        json.dump(merged, f)
+        json.dump(last_update, f)
