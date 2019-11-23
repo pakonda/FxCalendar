@@ -10,7 +10,6 @@ import json
 
 NOW = arrow.utcnow()
 URL = "https://www.forexfactory.com/calendar.php"
-PARAMS = {"day": NOW.format("MMMDD.YYYY")}
 COOKIES = {
     "fftimezoneoffset": 0,
     "ffdstonoff": 0,
@@ -21,11 +20,12 @@ COOKIES = {
 
 def get_calendar(days_shift: int = 0):
     now = NOW.shift(days=days_shift)
+    params = {"day": now.format("MMMDD.YYYY")}
     jar = requests.cookies.RequestsCookieJar()
     for k, v in COOKIES.items():
         jar.set(k, str(v), domain="forexfactory.com", path="/")
 
-    r = requests.get(URL, params=PARAMS, cookies=jar)
+    r = requests.get(URL, params=params, cookies=jar)
     soup = BeautifulSoup(r.content, "html.parser")
     table = soup.find("table", {"class": "calendar__table"})
     trs = table.select("tr.calendar__row.calendar_row")
@@ -42,7 +42,7 @@ def get_calendar(days_shift: int = 0):
 
     if len(trs) == 1 and trs[0]["data-eventid"] == "":
         print("no event on", now.format("YYYY-MM-DD"))
-        exit(0)
+        return
 
     events = []
     for tr in trs:
@@ -82,4 +82,5 @@ def get_calendar(days_shift: int = 0):
 
 
 if __name__ == "__main__":
-    get_calendar()
+    for i in range(-7, 7):
+        get_calendar(i)
