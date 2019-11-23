@@ -84,10 +84,10 @@ def get_calendar(days_shift: int = 0):
         os.makedirs(dir)
 
     json_file = f"{dir}/{shifted_dt.format('YYYY-MM-DD')}.json"
-    data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": events}
+    json_data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": events}
     with open(json_file, "w", encoding="utf-8") as f:
-        json.dump(data, f)
-    return data
+        json.dump(json_data, f)
+    return events
 
 
 if __name__ == "__main__":
@@ -98,6 +98,6 @@ if __name__ == "__main__":
 
     merged = list(itertools.chain.from_iterable(events_day))
 
-    data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
+    json_data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
     with open("data/last_update.json", "w", encoding="utf-8") as f:
-        json.dump(data, f)
+        json.dump(json_data, f)
