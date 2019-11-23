@@ -12,7 +12,7 @@ if not os.path.exists("data"):
     os.makedirs("data")
 
 
-NOW = arrow.utcnow()
+RUN_DT = arrow.utcnow()
 URL = "https://www.forexfactory.com/calendar.php"
 COOKIES = {
     "fftimezoneoffset": 0,
@@ -23,9 +23,9 @@ COOKIES = {
 
 
 def get_calendar(days_shift: int = 0):
-    now = NOW.shift(days=days_shift)
-    print("start scraping on", now.format("YYYY-MM-DD"), end="...")
-    params = {"day": now.format("MMMDD.YYYY")}
+    shifted_dt = RUN_DT.shift(days=days_shift)
+    print("start scraping on", shifted_dt.format("YYYY-MM-DD"), end="...")
+    params = {"day": shifted_dt.format("MMMDD.YYYY")}
     jar = requests.cookies.RequestsCookieJar()
     for k, v in COOKIES.items():
         jar.set(k, str(v), domain="forexfactory.com", path="/")
@@ -71,20 +71,23 @@ def get_calendar(days_shift: int = 0):
             elif field == "previous":
                 event[field] = data.text.strip()
 
-        dt = arrow.get(f"{now.format('YYYY-MM-DD')} {curr_time}", "YYYY-MM-DD H:mm")
+        dt = arrow.get(
+            f"{shifted_dt.format('YYYY-MM-DD')} {curr_time}", "YYYY-MM-DD H:mm"
+        )
         event["datetime"] = str(dt)
         events.append(event)
     print(f"done ({len(events)} events)")
     # pprint(events)
 
-    dir = f"data/date/{now.year}/{now.month}"
+    dir = f"data/date/{shifted_dt.year}/{shifted_dt.month}"
     if not os.path.exists(dir):
         os.makedirs(dir)
 
-    json_file = f"{dir}/{now.format('YYYY-MM-DD')}.json"
+    json_file = f"{dir}/{shifted_dt.format('YYYY-MM-DD')}.json"
+    data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": events}
     with open(json_file, "w", encoding="utf-8") as f:
-        json.dump(events, f)
-    return events
+        json.dump(data, f)
+    return data
 
 
 if __name__ == "__main__":
@@ -95,6 +98,6 @@ if __name__ == "__main__":
 
     merged = list(itertools.chain.from_iterable(events_day))
 
-    last_update = {"last_run": NOW.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
+    data = {"last_run": RUN_DT.format("YYYY-MM-DDTHH:mm:ssZZ"), "events": merged}
     with open("data/last_update.json", "w", encoding="utf-8") as f:
-        json.dump(last_update, f)
+        json.dump(data, f)
