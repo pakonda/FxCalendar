@@ -92,7 +92,7 @@ def get_calendar(days_shift: int = 0):
 
 if __name__ == "__main__":
     events_day = []
-    for i in range(-7, 7):
+    for i in range(-3, 8):
         events = get_calendar(i)
         events_day.append(events)
 
