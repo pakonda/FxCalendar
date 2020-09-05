@@ -1,4 +1,4 @@
-bs4==0.0.1
-requests==2.22.0
-arrow==0.15.4
-pprint==0.1
+bs4
+requests
+arrow
+pprint
