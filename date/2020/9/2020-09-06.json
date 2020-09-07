@@ -1,1 +1,1 @@
-{"timestamp": "2020-09-06T00:14:43+00:00", "events": [{"event_id": "112760", "currency": "AUD", "impact": "Low Impact Expected", "event": "AIG Services Index", "actual": "", "forecast": "", "previous": "", "event_dt": "2020-09-06T22:30:00+00:00"}]}
+{"timestamp": "2020-09-07T00:14:22+00:00", "events": [{"event_id": "112760", "currency": "AUD", "impact": "Low Impact Expected", "event": "AIG Services Index", "actual": "42.5", "forecast": "", "previous": "44.0", "event_dt": "2020-09-06T22:30:00+00:00"}]}
